@@ -5,15 +5,28 @@ import { useEffect, useState } from 'react'
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [showBackToTop, setShowBackToTop] = useState(false)
+  const [showNavbar, setShowNavbar] = useState(true)
+  const [lastScrollY, setLastScrollY] = useState(0)
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-      setShowBackToTop(window.scrollY > 300)
+      const currentScrollY = window.scrollY
+      
+      setIsScrolled(currentScrollY > 50)
+      setShowBackToTop(currentScrollY > 300)
+      
+      // Ẩn navbar khi cuộn xuống, hiện khi cuộn lên
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setShowNavbar(false)
+      } else {
+        setShowNavbar(true)
+      }
+      
+      setLastScrollY(currentScrollY)
     }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [lastScrollY])
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -29,7 +42,7 @@ export default function Home() {
   return (
     <>
       {/* Navigation - Dark Theme */}
-      <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
+      <nav className={`navbar ${isScrolled ? 'scrolled' : ''} ${showNavbar ? 'visible' : 'hidden'}`}>
         <div className="nav-container">
           <div className="nav-logo" onClick={() => scrollToTop()}>
             Triết học Mác – Lênin
@@ -38,7 +51,6 @@ export default function Home() {
             <li><a href="#home" onClick={(e) => { e.preventDefault(); scrollToSection('home') }}>Trang chủ</a></li>
             <li><a href="#intro" onClick={(e) => { e.preventDefault(); scrollToSection('intro') }}>Giới thiệu</a></li>
             <li><a href="#content" onClick={(e) => { e.preventDefault(); scrollToSection('content') }}>Nội dung</a></li>
-            <li><a href="#gallery" onClick={(e) => { e.preventDefault(); scrollToSection('gallery') }}>Gallery</a></li>
             <li><a href="#conclusion" onClick={(e) => { e.preventDefault(); scrollToSection('conclusion') }}>Kết luận</a></li>
           </ul>
         </div>
@@ -63,15 +75,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About/Intro Section with Image Area */}
+      {/* About/Intro Section */}
       <section id="intro" className="about-section">
-        <div className="section-bg-image">
-          {/* Vùng để thêm background image */}
-          <div className="image-placeholder">
-            <span>Thêm background image cho section này</span>
-          </div>
-        </div>
-        <div className="container">
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <h2 className="section-heading">
             <span className="heading-main">Giới thiệu</span>
             <span className="heading-sub">Tìm hiểu về chủ đề</span>
@@ -87,38 +93,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Character/Showcase Section */}
-      <section className="character-section">
-        <div className="character-bg-image">
-          {/* Vùng để thêm character/showcase image */}
-          <div className="image-placeholder large">
-            <span>Thêm hình minh họa nhân vật/lãnh tụ vào đây</span>
-          </div>
-        </div>
-        <div className="container">
-          <div className="character-content">
-            <h2 className="section-heading white">
-              <span className="heading-main">Nhân vật tiêu biểu</span>
-              <span className="heading-sub">Tìm hiểu về các nhân vật lịch sử</span>
-            </h2>
-            <div className="character-showcase">
-              <div className="character-image-area">
-                {/* Vùng để thêm ảnh nhân vật */}
-                <div className="image-placeholder character">
-                  <span>Thêm ảnh nhân vật vào đây</span>
-                </div>
-              </div>
-              <div className="character-info">
-                <h3 className="character-name">Chủ tịch Hồ Chí Minh</h3>
-                <p className="character-description">
-                  Chủ tịch Hồ Chí Minh xuất hiện từ phong trào yêu nước của nhân dân Việt Nam, tiêu biểu cho trí tuệ và nguyện vọng của dân tộc trong thời kỳ cách mạng giải phóng dân tộc.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Main Content Sections */}
       <section id="content" className="content-section">
         <div className="container">
@@ -127,18 +101,12 @@ export default function Home() {
             <span className="heading-sub">Khám phá các khái niệm</span>
           </h2>
           
-          {/* Concept Section */}
-          <div className="content-card concept-card">
-            <div className="card-image-area">
-              {/* Vùng để thêm ảnh minh họa */}
-              <div className="image-placeholder card">
-                <span>Thêm ảnh minh họa</span>
-              </div>
-            </div>
+          {/* Concept Section - Quần chúng nhân dân */}
+          <div className="content-card concept-masses-card">
+            <div className="card-image-area"></div>
             <div className="card-content">
-              <h3 className="card-title">1. Khái niệm quần chúng nhân dân và lãnh tụ</h3>
+              <h3 className="card-title">1. Khái niệm quần chúng nhân dân</h3>
               
-              <h4 className="card-subtitle">Quần chúng nhân dân</h4>
               <p>
                 Quần chúng nhân dân là tập hợp đông đảo những con người hoạt động trong những điều kiện lịch sử – xã hội nhất định, bao gồm nhiều thành phần và tầng lớp xã hội khác nhau.
               </p>
@@ -147,8 +115,15 @@ export default function Home() {
                 <li>Toàn thể nhân dân đấu tranh chống áp bức, bóc lột</li>
                 <li>Những người trực tiếp hoặc gián tiếp góp phần vào sự biến đổi xã hội</li>
               </ul>
+            </div>
+          </div>
 
-              <h4 className="card-subtitle">Lãnh tụ</h4>
+          {/* Concept Section - Lãnh tụ */}
+          <div className="content-card concept-leader-card">
+            <div className="card-image-area"></div>
+            <div className="card-content">
+              <h3 className="card-title">2. Khái niệm lãnh tụ</h3>
+              
               <p>
                 Lãnh tụ là những cá nhân kiệt xuất xuất hiện từ trong phong trào quần chúng nhằm giải quyết các nhiệm vụ lịch sử đặt ra.
               </p>
@@ -160,15 +135,31 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Role Section */}
-          <div className="content-card role-card">
-            <div className="card-image-area">
-              <div className="image-placeholder card">
-                <span>Thêm ảnh minh họa</span>
+          {/* Character/Showcase Section - Moved here */}
+          <div className="character-card">
+            <div className="character-bg-image"></div>
+            <div className="character-content-inner">
+              <h2 className="section-heading white">
+                <span className="heading-main">Nhân vật tiêu biểu</span>
+                <span className="heading-sub">Tìm hiểu về các nhân vật lịch sử</span>
+              </h2>
+              <div className="character-showcase">
+                <div className="character-image-area"></div>
+                <div className="character-info">
+                  <h3 className="character-name">Chủ tịch Hồ Chí Minh</h3>
+                  <p className="character-description">
+                    Chủ tịch Hồ Chí Minh xuất hiện từ phong trào yêu nước của nhân dân Việt Nam, tiêu biểu cho trí tuệ và nguyện vọng của dân tộc trong thời kỳ cách mạng giải phóng dân tộc.
+                  </p>
+                </div>
               </div>
             </div>
+          </div>
+
+          {/* Role Section */}
+          <div className="content-card role-card">
+            <div className="card-image-area"></div>
             <div className="card-content">
-              <h3 className="card-title">2. Vai trò quyết định của quần chúng nhân dân</h3>
+              <h3 className="card-title">3. Vai trò quyết định của quần chúng nhân dân</h3>
               
               <p className="lead-text">
                 Triết học Mác – Lênin khẳng định quần chúng nhân dân là chủ thể sáng tạo chân chính của lịch sử, thể hiện trên ba phương diện cơ bản:
@@ -176,17 +167,17 @@ export default function Home() {
 
               <div className="feature-grid">
                 <div className="feature-item">
-                  <div className="feature-number">2.1</div>
+                  <div className="feature-number">3.1</div>
                   <h4 className="feature-title">Lực lượng sản xuất cơ bản</h4>
                   <p>Quần chúng nhân dân trực tiếp sản xuất ra toàn bộ của cải vật chất và các giá trị tinh thần.</p>
                 </div>
                 <div className="feature-item">
-                  <div className="feature-number">2.2</div>
+                  <div className="feature-number">3.2</div>
                   <h4 className="feature-title">Động lực cách mạng</h4>
                   <p>Mọi cuộc cách mạng xã hội chỉ có thể giành thắng lợi khi có sự tham gia tích cực của quần chúng nhân dân.</p>
                 </div>
                 <div className="feature-item">
-                  <div className="feature-number">2.3</div>
+                  <div className="feature-number">3.3</div>
                   <h4 className="feature-title">Sáng tạo văn hóa</h4>
                   <p>Quần chúng nhân dân sáng tạo, lưu giữ và truyền bá các giá trị văn hóa, đạo đức và tinh thần.</p>
                 </div>
@@ -196,13 +187,9 @@ export default function Home() {
 
           {/* Leader Section */}
           <div className="content-card leader-card">
-            <div className="card-image-area">
-              <div className="image-placeholder card">
-                <span>Thêm ảnh minh họa</span>
-              </div>
-            </div>
+            <div className="card-image-area"></div>
             <div className="card-content">
-              <h3 className="card-title">3. Vai trò quan trọng của lãnh tụ</h3>
+              <h3 className="card-title">4. Vai trò quan trọng của lãnh tụ</h3>
               
               <p>
                 Bên cạnh vai trò quyết định của quần chúng nhân dân, triết học Mác – Lênin cũng khẳng định vai trò to lớn của lãnh tụ trong lịch sử.
@@ -215,65 +202,37 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Gallery Section */}
-      <section id="gallery" className="gallery-section">
-        <div className="container">
-          <h2 className="section-heading white">
-            <span className="heading-main">Gallery</span>
-            <span className="heading-sub">Hình ảnh minh họa</span>
-          </h2>
-          
-          <div className="gallery-grid">
-            <div className="gallery-item">
-              <div className="gallery-image">
-                {/* Vùng để thêm ảnh gallery */}
-                <div className="image-placeholder gallery">
-                  <span>Thêm ảnh 1</span>
-                </div>
-              </div>
-              <div className="gallery-info">
-                <h4 className="gallery-title">Cách mạng Tháng Tám 1945</h4>
-                <p className="gallery-description">Sự nổi dậy đồng loạt của quần chúng nhân dân</p>
-              </div>
+          {/* Relationship Section */}
+          <div className="content-card relationship-card">
+            <div className="card-image-area"></div>
+            <div className="card-content">
+              <h3 className="card-title">5. Mối quan hệ biện chứng</h3>
+              
+              <p>
+                Giữa quần chúng nhân dân và lãnh tụ tồn tại mối quan hệ thống nhất biện chứng, không tách rời:
+              </p>
+              <ul className="feature-list">
+                <li>Quần chúng nhân dân là lực lượng tạo ra lãnh tụ; lãnh tụ là sản phẩm của thời đại và phong trào quần chúng.</li>
+                <li>Lãnh tụ giữ vai trò dẫn dắt, định hướng và tổ chức phong trào quần chúng, qua đó thúc đẩy sự phát triển của lịch sử.</li>
+              </ul>
             </div>
-            
-            <div className="gallery-item">
-              <div className="gallery-image">
-                <div className="image-placeholder gallery">
-                  <span>Thêm ảnh 2</span>
-                </div>
-              </div>
-              <div className="gallery-info">
-                <h4 className="gallery-title">Lao động sản xuất</h4>
-                <p className="gallery-description">Quần chúng nhân dân tạo ra của cải vật chất</p>
-              </div>
-            </div>
-            
-            <div className="gallery-item">
-              <div className="gallery-image">
-                <div className="image-placeholder gallery">
-                  <span>Thêm ảnh 3</span>
-                </div>
-              </div>
-              <div className="gallery-info">
-                <h4 className="gallery-title">Văn hóa dân gian</h4>
-                <p className="gallery-description">Giá trị văn hóa do nhân dân sáng tạo</p>
-              </div>
-            </div>
-            
-            <div className="gallery-item">
-              <div className="gallery-image">
-                <div className="image-placeholder gallery">
-                  <span>Thêm ảnh 4</span>
-                </div>
-              </div>
-              <div className="gallery-info">
-                <h4 className="gallery-title">Lãnh đạo cách mạng</h4>
-                <p className="gallery-description">Vai trò của lãnh tụ trong lịch sử</p>
-              </div>
+          </div>
+
+          {/* Methodology Section */}
+          <div className="content-card methodology-card">
+            <div className="card-image-area"></div>
+            <div className="card-content">
+              <h3 className="card-title">6. Ý nghĩa phương pháp luận</h3>
+              
+              <p>
+                Từ mối quan hệ giữa quần chúng nhân dân và lãnh tụ, triết học Mác – Lênin rút ra những ý nghĩa phương pháp luận quan trọng:
+              </p>
+              <ul className="feature-list">
+                <li>Chống tư tưởng sùng bái cá nhân, tuyệt đối hóa vai trò của lãnh tụ</li>
+                <li>Đồng thời chống quan điểm xem nhẹ hoặc phủ nhận vai trò của lãnh tụ</li>
+                <li>Cần kết hợp hài hòa vai trò của quần chúng nhân dân và lãnh tụ để phát huy sức mạnh tổng hợp của xã hội</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -308,7 +267,6 @@ export default function Home() {
               <ul className="footer-links">
                 <li><a href="#intro">Giới thiệu</a></li>
                 <li><a href="#content">Nội dung chính</a></li>
-                <li><a href="#gallery">Gallery</a></li>
                 <li><a href="#conclusion">Kết luận</a></li>
               </ul>
             </div>
@@ -329,7 +287,7 @@ export default function Home() {
       {/* Back to Top Button */}
       {showBackToTop && (
         <button className="back-to-top" onClick={scrollToTop} aria-label="Về đầu trang">
-          TOP
+          <span className="arrow-up">↑</span>
         </button>
       )}
     </>

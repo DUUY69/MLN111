@@ -1,0 +1,57 @@
+═══════════════════════════════════════════════════════════════
+  HƯỚNG DẪN THÊM ẢNH VÀO WEBSITE
+═══════════════════════════════════════════════════════════════
+
+📁 CẤU TRÚC THƯ MỤC:
+
+public/
+├── hero/              ← Đặt hero-bg.jpg vào đây (1 ảnh)
+├── about/             ← Đặt about-bg.jpg vào đây (1 ảnh)
+├── character/         ← Đặt character-bg.jpg và character-main.jpg (2 ảnh)
+├── content/           ← Đặt 5 ảnh: concept.jpg, role.jpg, leader.jpg, 
+│                        relationship.jpg, methodology.jpg
+├── features/          ← Đặt 3 ảnh: feature-2-1.jpg, feature-2-2.jpg, 
+│                        feature-2-3.jpg
+└── gallery/           ← Đặt 4 ảnh: gallery-1.jpg đến gallery-4.jpg
+
+═══════════════════════════════════════════════════════════════
+  CHI TIẾT TỪNG FOLDER
+═══════════════════════════════════════════════════════════════
+
+1. 📂 hero/
+   └── hero-bg.jpg          (Ảnh background đầu trang)
+
+2. 📂 about/
+   └── about-bg.jpg         (Ảnh background section Giới thiệu)
+
+3. 📂 character/
+   ├── character-bg.jpg     (Background section nhân vật)
+   └── character-main.jpg   (Ảnh nhân vật chính)
+
+4. 📂 content/
+   ├── concept.jpg          (Card "Khái niệm")
+   ├── role.jpg             (Card "Vai trò quần chúng nhân dân")
+   ├── leader.jpg           (Card "Vai trò lãnh tụ")
+   ├── relationship.jpg     (Card "Mối quan hệ biện chứng")
+   └── methodology.jpg      (Card "Ý nghĩa phương pháp luận")
+
+5. 📂 features/
+   ├── feature-2-1.jpg     (Feature "Lực lượng sản xuất")
+   ├── feature-2-2.jpg     (Feature "Động lực cách mạng")
+   └── feature-2-3.jpg     (Feature "Sáng tạo văn hóa")
+
+6. 📂 gallery/
+   ├── gallery-1.jpg        (Cách mạng Tháng Tám 1945)
+   ├── gallery-2.jpg        (Lao động sản xuất)
+   ├── gallery-3.jpg        (Văn hóa dân gian)
+   └── gallery-4.jpg        (Lãnh đạo cách mạng)
+
+═══════════════════════════════════════════════════════════════
+  TỔNG KẾT: 16 ẢNH CẦN CÓ
+═══════════════════════════════════════════════════════════════
+
+✅ Chỉ cần đặt ảnh vào đúng folder với đúng tên file
+✅ Không cần chỉnh sửa code
+✅ Refresh trang để xem kết quả
+
+═══════════════════════════════════════════════════════════════
