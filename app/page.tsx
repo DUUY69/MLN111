@@ -46,12 +46,7 @@ export default function Home() {
 
       {/* Hero Banner - Large with Image Area */}
       <section id="home" className="hero">
-        <div className="hero-bg-image">
-          {/* Vùng để thêm background image - Thêm ảnh vào đây */}
-          <div className="image-placeholder">
-            <span>Thêm hero background image vào đây</span>
-          </div>
-        </div>
+        <div className="hero-bg-image"></div>
         <div className="hero-overlay"></div>
         <div className="hero-content">
           <h1 className="hero-title">Vai trò của quần chúng nhân dân và lãnh tụ trong lịch sử</h1>

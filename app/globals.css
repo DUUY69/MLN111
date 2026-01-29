@@ -143,6 +143,22 @@ body {
   right: 0;
   bottom: 0;
   z-index: 0;
+  background-image: url('/images/hero-crowd.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Fallback nếu chưa có ảnh */
+.hero-bg-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+  z-index: -1;
 }
 
 .image-placeholder {
@@ -184,7 +200,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(180deg, rgba(5, 20, 34, 0.7) 0%, rgba(10, 25, 41, 0.9) 100%);
+  background: linear-gradient(180deg, rgba(5, 20, 34, 0.75) 0%, rgba(10, 25, 41, 0.85) 100%);
   z-index: 1;
 }
 
