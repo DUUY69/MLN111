@@ -12,13 +12,14 @@ interface Question {
     wrong: string
     correct: string
   }
+  theory: string  // Lý thuyết áp dụng riêng cho từng câu
 }
 
 interface LocData {
   title: string
   emoji: string
   questions: Question[]
-  message: string
+  illustration?: string  // Ảnh minh họa: đặt file vào public/game/illustrations/
 }
 
 export default function Home() {
@@ -44,13 +45,14 @@ export default function Home() {
       emoji: '🥟',
       questions: [
         {
-          question: 'Gói bánh chưng ngày Tết thể hiện vai trò nào trong lịch sử xã hội?',
+          question: 'Ai là chủ thể chính sáng tạo và lưu truyền phong tục gói bánh chưng ngày Tết?',
           options: ['Lãnh tụ', 'Quần chúng nhân dân'],
           correctAnswer: 1,
           explanation: {
             wrong: 'Lãnh tụ không trực tiếp tạo ra các giá trị văn hóa dân gian hằng ngày.',
             correct: 'Gói bánh chưng là hoạt động lao động, sáng tạo văn hóa do nhân dân thực hiện → quần chúng là chủ thể sáng tạo giá trị tinh thần.'
-          }
+          },
+          theory: 'Quần chúng nhân dân là chủ thể sáng tạo giá trị văn hóa tinh thần'
         },
         {
           question: 'Truyền thống gói bánh chưng được duy trì qua nhiều thế hệ cho thấy điều gì?',
@@ -59,10 +61,21 @@ export default function Home() {
           explanation: {
             wrong: 'Truyền thống văn hóa không phụ thuộc vào một cá nhân cụ thể.',
             correct: 'Chính quần chúng nhân dân là người sáng tạo, lưu giữ và truyền bá văn hóa.'
-          }
+          },
+          theory: 'Quần chúng nhân dân sáng tạo, lưu giữ và truyền bá văn hóa qua các thế hệ'
+        },
+        {
+          question: 'Bánh chưng – biểu tượng văn hóa Tết – do ai sáng tạo nên?',
+          options: ['Vua Hùng hoặc lãnh tụ triều đình', 'Quần chúng nhân dân qua lao động và đời sống'],
+          correctAnswer: 1,
+          explanation: {
+            wrong: 'Biểu tượng văn hóa dân gian thường xuất phát từ đời sống nhân dân, không phải từ một cá nhân cụ thể.',
+            correct: 'Văn hóa dân gian là sản phẩm của quần chúng qua quá trình lao động và sinh hoạt.'
+          },
+          theory: 'Văn hóa dân gian là sản phẩm của quần chúng qua lao động và sinh hoạt'
         }
       ],
-      message: 'Quần chúng nhân dân là chủ thể sáng tạo giá trị văn hóa tinh thần'
+      illustration: '/game/illustrations/loc-1.png'  // Đặt ảnh vào public/game/illustrations/loc-1.png
     },
     {
       title: 'DỰNG CÂY NÊU – TỔ CHỨC LỄ HỘI TẾT',
@@ -75,7 +88,8 @@ export default function Home() {
           explanation: {
             wrong: 'Quần chúng đông đảo nhưng thiếu tổ chức sẽ dễ dẫn đến rối loạn. Lãnh tụ không thể tự mình tạo nên lễ hội nếu không có quần chúng tham gia.',
             correct: 'Quần chúng là lực lượng thực hiện, lãnh tụ giữ vai trò tổ chức và định hướng.'
-          }
+          },
+          theory: 'Kết hợp hài hòa vai trò quần chúng (thực hiện) và lãnh tụ (tổ chức, định hướng)'
         },
         {
           question: 'Vai trò của người đứng đầu làng/xã trong lễ hội Tết thể hiện điều gì?',
@@ -84,10 +98,21 @@ export default function Home() {
           explanation: {
             wrong: 'Lãnh đạo không thể thay thế hoạt động của quần chúng.',
             correct: 'Đây chính là vai trò của lãnh tụ theo quan điểm Mác – Lênin.'
-          }
+          },
+          theory: 'Vai trò lãnh tụ: định hướng và tổ chức, không thay thế quần chúng'
+        },
+        {
+          question: 'Cây nêu ngày Tết được dựng lên nhờ sự kết hợp của ai?',
+          options: ['Chỉ người đứng đầu làng', 'Cả quần chúng thực hiện và lãnh tụ tổ chức'],
+          correctAnswer: 1,
+          explanation: {
+            wrong: 'Một mình lãnh đạo không thể tạo nên lễ hội có ý nghĩa.',
+            correct: 'Quần chúng là lực lượng thực hiện, lãnh tụ đóng vai trò dẫn dắt và tổ chức.'
+          },
+          theory: 'Quần chúng thực hiện, lãnh tụ dẫn dắt và tổ chức – kết hợp biện chứng'
         }
       ],
-      message: 'Kết hợp hài hòa vai trò của quần chúng và lãnh tụ'
+      illustration: '/game/illustrations/loc-2.png'
     },
     {
       title: 'PHONG TRÀO "TẾT VÌ NGƯỜI NGHÈO"',
@@ -100,7 +125,8 @@ export default function Home() {
           explanation: {
             wrong: 'Chỉ phát động mà không có sự tham gia của quần chúng thì phong trào không hiệu quả. Tự phát, thiếu tổ chức sẽ khó lan tỏa rộng rãi.',
             correct: 'Thành công đến từ sự kết hợp biện chứng giữa lãnh tụ và quần chúng.'
-          }
+          },
+          theory: 'Sự kết hợp biện chứng giữa lãnh tụ (phát động) và quần chúng (tham gia)'
         },
         {
           question: 'Phong trào này thể hiện ý nghĩa phương pháp luận nào?',
@@ -109,10 +135,21 @@ export default function Home() {
           explanation: {
             wrong: 'Triết học Mác – Lênin phản đối sùng bái cá nhân.',
             correct: 'Mọi phong trào xã hội muốn bền vững phải dựa vào quần chúng.'
-          }
+          },
+          theory: 'Phát huy sức mạnh toàn dân; chống sùng bái cá nhân'
+        },
+        {
+          question: 'Ai là người trực tiếp mang quà, lì xì đến với người nghèo trong phong trào "Tết vì người nghèo"?',
+          options: ['Chỉ lãnh tụ phát động', 'Quần chúng tình nguyện viên và nhân dân tham gia'],
+          correctAnswer: 1,
+          explanation: {
+            wrong: 'Lãnh tụ phát động nhưng không trực tiếp thực hiện toàn bộ.',
+            correct: 'Quần chúng là lực lượng trực tiếp thực hiện, lãnh tụ định hướng và tổ chức.'
+          },
+          theory: 'Quần chúng là lực lượng trực tiếp thực hiện, lãnh tụ định hướng'
         }
       ],
-      message: 'Phát huy sức mạnh toàn dân trong mọi phong trào xã hội'
+      illustration: '/game/illustrations/loc-3.png'
     },
     {
       title: 'TẾT TRONG CÁCH MẠNG THÁNG TÁM 1945',
@@ -125,7 +162,8 @@ export default function Home() {
           explanation: {
             wrong: 'Không có quần chúng tham gia thì không thể có thắng lợi cách mạng.',
             correct: 'Lãnh tụ đề ra đường lối đúng + quần chúng là lực lượng quyết định.'
-          }
+          },
+          theory: 'Lãnh tụ đề ra đường lối đúng + quần chúng là lực lượng quyết định'
         },
         {
           question: 'Sự kiện này khẳng định luận điểm nào của Triết học Mác – Lênin?',
@@ -134,23 +172,33 @@ export default function Home() {
           explanation: {
             wrong: 'Đây là biểu hiện của tư tưởng sùng bái cá nhân.',
             correct: 'Quần chúng là lực lượng quyết định, lãnh tụ giữ vai trò dẫn dắt.'
-          }
+          },
+          theory: 'Quần chúng là chủ thể sáng tạo lịch sử; lãnh tụ dẫn dắt'
+        },
+        {
+          question: 'Trong Cách mạng Tháng Tám 1945, lực lượng nào là "người làm nên lịch sử"?',
+          options: ['Chỉ lãnh tụ và Đảng', 'Quần chúng nhân dân dưới sự lãnh đạo của Đảng'],
+          correctAnswer: 1,
+          explanation: {
+            wrong: 'Lãnh tụ và Đảng lãnh đạo nhưng quần chúng mới là lực lượng quyết định.',
+            correct: 'Quần chúng là chủ thể lịch sử, lãnh tụ đề ra đường lối và dẫn dắt.'
+          },
+          theory: 'Quần chúng là chủ thể lịch sử – "người làm nên lịch sử"'
         }
       ],
-      message: 'Quần chúng là lực lượng quyết định, lãnh tụ giữ vai trò dẫn dắt'
+      illustration: '/game/illustrations/loc-4.png'
     }
   ]
   
   const handlePickEnvelope = (index: number) => {
     const locIndex = Math.floor(index / 3) // Mỗi lộc có 3 phong bao
+    const questionIndex = index % 3 // Mỗi phong bao tương ứng 1 câu hỏi
     if (locIndex < gameData.length) {
-      // Nếu chưa chọn phong bao này, thêm vào danh sách
       if (!pickedEnvelopes.includes(index)) {
         setPickedEnvelopes([...pickedEnvelopes, index])
       }
-      // Luôn chuyển sang câu hỏi của lộc này (bắt đầu từ câu hỏi đầu tiên)
       setCurrentLoc(locIndex)
-      setCurrentQuestion(0)
+      setCurrentQuestion(questionIndex) // Câu hỏi theo phong bao (0, 1, 2)
       setSelectedAnswer(null)
       setGameState('question')
     }
@@ -576,8 +624,11 @@ export default function Home() {
                         <div className="envelope-gold-design"></div>
                         {isPicked && locData && (
                           <div className="envelope-content">
-                            <span className="envelope-emoji">{locData.emoji}</span>
-                            <span className="envelope-title">{locData.title}</span>
+                            {locData.illustration ? (
+                              <img src={locData.illustration} alt={locData.title} className="envelope-illustration" />
+                            ) : (
+                              <span className="envelope-title">{locData.title}</span>
+                            )}
                           </div>
                         )}
                       </div>
@@ -608,43 +659,31 @@ export default function Home() {
           
           {gameState === 'question' && (
             <div className="game-question-screen">
-              <div className="game-loc-header">
-                <span className="loc-emoji">{gameData[currentLoc].emoji}</span>
-                <h3 className="loc-title">LỘC {currentLoc + 1}: {gameData[currentLoc].title}</h3>
-              </div>
-              
-              <div className="loc-image-container">
-                {currentLoc === 0 && (
-                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc1/banh-chung.jpg)' }}></div>
-                )}
-                {currentLoc === 1 && (
-                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc2/cay-neu.jpg)' }}></div>
-                )}
-                {currentLoc === 2 && (
-                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc3/tet-nguoi-ngheo.jpg)' }}></div>
-                )}
-                {currentLoc === 3 && (
-                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc4/cm-thang-8.jpg)' }}></div>
-                )}
-              </div>
-              
-              <div className="question-box">
-                <h4 className="question-text">
-                  {gameData[currentLoc].questions[currentQuestion].question}
-                </h4>
-                
-                <div className="options-list">
-                  {gameData[currentLoc].questions[currentQuestion].options.map((option, index) => (
-                    <button
-                      key={index}
-                      className={`option-button ${selectedAnswer === index ? 'selected' : ''} ${selectedAnswer !== null ? 'disabled' : ''}`}
-                      onClick={() => selectedAnswer === null && handleAnswerSelect(index)}
-                      disabled={selectedAnswer !== null}
-                    >
-                      <span className="option-label">{String.fromCharCode(65 + index)}.</span>
-                      <span className="option-text">{option}</span>
-                    </button>
-                  ))}
+              <div className="quiz-frame">
+                <div className="quiz-frame-inner">
+                  <div className="quiz-frame-header">
+                    <h3 className="loc-title">LỘC {currentLoc + 1}: {gameData[currentLoc].title}</h3>
+                  </div>
+                  <div className="quiz-label">CÂU HỎI</div>
+                  <h4 className="question-text">
+                    {gameData[currentLoc].questions[currentQuestion].question}
+                  </h4>
+                  <div className="options-list">
+                    {gameData[currentLoc].questions[currentQuestion].options.map((option, index) => (
+                      <div key={index} className="choice-frame-wrapper">
+                        <div className="choices-frame">
+                          <button
+                            className={`option-button option-gold ${selectedAnswer === index ? 'selected' : ''} ${selectedAnswer !== null ? 'disabled' : ''}`}
+                            onClick={() => selectedAnswer === null && handleAnswerSelect(index)}
+                            disabled={selectedAnswer !== null}
+                          >
+                            <span className="option-label">{String.fromCharCode(65 + index)}.</span>
+                            <span className="option-text">{option}</span>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -652,64 +691,51 @@ export default function Home() {
           
           {gameState === 'explanation' && (
             <div className="game-explanation-screen">
-              <div className="game-loc-header">
-                <span className="loc-emoji">{gameData[currentLoc].emoji}</span>
-                <h3 className="loc-title">LỘC {currentLoc + 1}: {gameData[currentLoc].title}</h3>
-              </div>
-              
-              <div className="loc-image-container">
-                {currentLoc === 0 && (
-                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc1/banh-chung.jpg)' }}></div>
-                )}
-                {currentLoc === 1 && (
-                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc2/cay-neu.jpg)' }}></div>
-                )}
-                {currentLoc === 2 && (
-                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc3/tet-nguoi-ngheo.jpg)' }}></div>
-                )}
-                {currentLoc === 3 && (
-                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc4/cm-thang-8.jpg)' }}></div>
-                )}
-              </div>
-              
-              <div className="explanation-box">
-                <h4 className="question-text">
-                  {gameData[currentLoc].questions[currentQuestion].question}
-                </h4>
-                
-                <div className="answer-result">
-                  <div className={`result-badge ${selectedAnswer === gameData[currentLoc].questions[currentQuestion].correctAnswer ? 'correct' : 'wrong'}`}>
-                    {selectedAnswer === gameData[currentLoc].questions[currentQuestion].correctAnswer ? '✅ Đúng' : '❌ Sai'}
+              <div className="quiz-frame explanation-frame">
+                <div className="quiz-frame-inner">
+                  <div className="quiz-frame-header">
+                    <h3 className="loc-title">LỘC {currentLoc + 1}: {gameData[currentLoc].title}</h3>
                   </div>
+                  <div className="quiz-label">CÂU HỎI</div>
+                  <h4 className="question-text">
+                    {gameData[currentLoc].questions[currentQuestion].question}
+                  </h4>
                   
-                  <div className="explanation-content">
+                  <div className="answer-result-new">
                     {selectedAnswer === gameData[currentLoc].questions[currentQuestion].correctAnswer ? (
-                      <div className="explanation-correct">
-                        <p><strong>✅ Đáp án đúng:</strong></p>
-                        <p>{gameData[currentLoc].questions[currentQuestion].explanation.correct}</p>
+                      <div className="answer-card answer-correct-card">
+                        <div className="answer-card-content">
+                          <div className="answer-card-label">Đáp án đúng</div>
+                          <p>{gameData[currentLoc].questions[currentQuestion].explanation.correct}</p>
+                        </div>
                       </div>
                     ) : (
                       <>
-                        <div className="explanation-wrong">
-                          <p><strong>❌ Đáp án sai:</strong></p>
-                          <p>{gameData[currentLoc].questions[currentQuestion].explanation.wrong}</p>
+                        <div className="answer-card answer-wrong-card">
+                          <div className="answer-card-content">
+                            <div className="answer-card-label wrong">Đáp án sai</div>
+                            <p>{gameData[currentLoc].questions[currentQuestion].explanation.wrong}</p>
+                          </div>
                         </div>
-                        <div className="explanation-correct">
-                          <p><strong>✅ Đáp án đúng:</strong></p>
-                          <p>{gameData[currentLoc].questions[currentQuestion].explanation.correct}</p>
+                        <div className="answer-card answer-correct-card">
+                          <div className="answer-card-content">
+                            <div className="answer-card-label">Đáp án đúng</div>
+                            <p>{gameData[currentLoc].questions[currentQuestion].explanation.correct}</p>
+                          </div>
                         </div>
                       </>
                     )}
                   </div>
+                  
+                  <div className="philosophy-message">
+                    <span className="philosophy-label">Lý thuyết áp dụng:</span>
+                    <p className="message-text">{gameData[currentLoc].questions[currentQuestion].theory}</p>
+                  </div>
+                  
+                  <button className="btn-nhan-loc" onClick={handleContinueAfterExplanation}>
+                    {pickedEnvelopes.length === 12 ? 'Xem kết quả' : 'Nhận Lộc'}
+                  </button>
                 </div>
-                
-                <div className="philosophy-message">
-                  <p className="message-text">🌱 {gameData[currentLoc].message}</p>
-                </div>
-                
-                <button className="game-action-button primary" onClick={handleContinueAfterExplanation}>
-                  {pickedEnvelopes.length === 12 ? 'Xem kết quả' : 'Hái lộc tiếp'}
-                </button>
               </div>
             </div>
           )}
@@ -717,7 +743,7 @@ export default function Home() {
           {gameState === 'finished' && (
             <div className="game-finished-screen">
               <div className="finished-content">
-                <div className="finished-icon">🎊</div>
+                <div className="finished-icon"></div>
                 <h3 className="finished-title">Chúc mừng bạn đã hoàn thành!</h3>
                 
                 <div className="finished-image-container">
@@ -733,10 +759,10 @@ export default function Home() {
                 <div className="philosophy-summary">
                   <h4>Thông điệp triết học:</h4>
                   <ul className="philosophy-list">
-                    <li>🌱 Quần chúng nhân dân là chủ thể sáng tạo lịch sử</li>
-                    <li>🌱 Lãnh tụ không đứng ngoài quần chúng</li>
-                    <li>🌱 Chống sùng bái cá nhân</li>
-                    <li>🌱 Phát huy sức mạnh toàn dân</li>
+                    <li>Quần chúng nhân dân là chủ thể sáng tạo lịch sử</li>
+                    <li>Lãnh tụ không đứng ngoài quần chúng</li>
+                    <li>Chống sùng bái cá nhân</li>
+                    <li>Phát huy sức mạnh toàn dân</li>
                   </ul>
                 </div>
                 

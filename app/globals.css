@@ -990,6 +990,7 @@ main {
   flex-direction: column;
   align-items: center;
   gap: 0;
+  background: transparent;
 }
 
 .game-banner-img {
@@ -997,6 +998,9 @@ main {
   height: auto;
   display: block;
   margin: 0 auto 2rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 /* Game Start Screen */
@@ -1103,9 +1107,17 @@ main {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.5rem;
+  padding: 0.25rem;
   width: 100%;
   height: 100%;
+}
+
+.envelope-illustration {
+  width: 100%;
+  height: 100%;
+  min-height: 60px;
+  object-fit: contain;
+  border-radius: 6px;
 }
 
 .envelope-emoji {
@@ -1207,6 +1219,25 @@ main {
   box-shadow: 0 12px 40px rgba(255, 215, 0, 0.6);
 }
 
+/* Header LỘC - vùng oval vàng trên khung quiz-frame.png */
+.quiz-frame-header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+  padding: 0.75rem 1.25rem;
+  background: linear-gradient(90deg, transparent, rgba(196, 30, 58, 0.1), transparent);
+  border-radius: 10px;
+  border-left: 4px solid #c41e3a;
+  border-right: 4px solid #ffd700;
+}
+
+.quiz-frame-header .loc-title {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #8b0000;
+  font-weight: 700;
+  display: block;
+}
+
 .game-loc-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -1228,6 +1259,194 @@ main {
   color: #ffd700;
   font-weight: 700;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Quiz Frame - họa tiết màu sắc Tết */
+.quiz-frame {
+  position: relative;
+  background: linear-gradient(135deg, #fffef8 0%, #fff5e6 50%, #fffef8 100%);
+  border-radius: 16px;
+  min-height: 350px;
+  color: #333;
+  box-sizing: border-box;
+  padding: 2rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2), inset 0 0 60px rgba(255, 215, 0, 0.05);
+  border: 2px solid #ffd700;
+  border-top: 4px solid #c41e3a;
+}
+
+.quiz-frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 14px;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(255, 215, 0, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(196, 30, 58, 0.06) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.quiz-frame.explanation-frame {
+  min-height: 450px;
+}
+
+.quiz-frame-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+/* Nhãn CÂU HỎI - màu vàng đỏ Tết */
+.quiz-label {
+  display: inline-block;
+  background: linear-gradient(90deg, #c41e3a 0%, #ff6b35 50%, #ffd700 100%);
+  color: #fff;
+  padding: 0.35rem 1.25rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: 0.08em;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(196, 30, 58, 0.3);
+}
+
+/* Option nằm trong choices-frame.png - style nhẹ để khung hiện rõ */
+.option-button.option-gold {
+  background: rgba(255, 252, 245, 0.95);
+  border: 2px solid rgba(218, 165, 32, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.option-button.option-gold:hover {
+  border-color: #ffd700;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.option-button.option-gold.selected {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 165, 0, 0.2) 100%);
+  border-color: #ffd700;
+}
+
+/* Mỗi đáp án 1 khung - tùy câu hỏi có 2 hoặc 3 khung */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.choice-frame-wrapper {
+  width: 100%;
+}
+
+/* Khung lựa chọn - họa tiết Tết */
+.choices-frame {
+  position: relative;
+  background: linear-gradient(180deg, #fffbf0 0%, #fff5e0 100%);
+  border-radius: 12px;
+  min-height: 55px;
+  padding: 0.75rem 1rem;
+  box-sizing: border-box;
+  border: 1px solid #daa520;
+  box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.choices-frame .option-button {
+  width: 100%;
+  margin: 0;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 50px;
+}
+
+/* Nút Nhận Lộc - màu Tết */
+.btn-nhan-loc {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 2rem auto 0;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #c41e3a 100%);
+  border: 2px solid #8b0000;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+  transition: transform 0.3s;
+  line-height: 1.2;
+  box-shadow: 0 4px 20px rgba(196, 30, 58, 0.4);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.btn-nhan-loc:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.btn-nhan-loc:active {
+  transform: scale(0.98);
+}
+
+/* Answer cards - đáp án sai/đúng với ảnh thiết kế */
+.answer-result-new {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.answer-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 120px;
+  display: flex;
+  align-items: stretch;
+}
+
+.answer-card-content {
+  position: relative;
+  z-index: 1;
+  padding: 1.5rem 2rem;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 12px;
+  border-left: 4px solid #28a745;
+  margin: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.answer-card-content .answer-card-label.wrong {
+  color: #dc3545;
+}
+
+.answer-card-content .answer-card-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #28a745;
+  margin-bottom: 0.75rem;
+}
+
+.answer-card-content p {
+  margin: 0;
+  line-height: 1.7;
+  color: #333;
+  font-size: 1.05rem;
+}
+
+.answer-wrong-card .answer-card-content {
+  border-left-color: #dc3545;
 }
 
 .question-box,
@@ -1396,12 +1615,38 @@ main {
   font-size: 1.1rem;
 }
 
+.philosophy-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #c41e3a;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.03em;
+}
+
+/* Ảnh minh họa trong màn giải thích */
+.quiz-illustration {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.quiz-illustration img {
+  max-width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
 .philosophy-message {
   margin-top: 2rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 107, 53, 0.1) 50%, rgba(196, 30, 58, 0.08) 100%);
   border-radius: 12px;
-  border-left: 4px solid #ffd700;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  border-left: 4px solid #c41e3a;
+  box-shadow: inset 0 0 30px rgba(255, 215, 0, 0.1);
 }
 
 .message-text {
@@ -1428,9 +1673,13 @@ main {
 }
 
 .finished-icon {
-  font-size: 5rem;
-  margin-bottom: 1rem;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #c41e3a 100%);
+  border-radius: 50%;
   animation: bounce 1s ease-in-out infinite;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
 }
 
 @keyframes bounce {
@@ -1470,11 +1719,12 @@ main {
 }
 
 .final-message-box {
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(255, 107, 53, 0.08) 50%, rgba(196, 30, 58, 0.06) 100%);
   border-radius: 15px;
   padding: 2rem;
   margin: 2rem 0;
-  border-left: 4px solid #ffd700;
+  border: 2px solid rgba(255, 215, 0, 0.4);
+  border-left: 4px solid #c41e3a;
 }
 
 .final-message-line {
@@ -1657,8 +1907,22 @@ main {
   }
   
   .question-box,
-  .explanation-box {
+  .explanation-box,
+  .quiz-frame {
     padding: 1.5rem;
+  }
+  
+  .quiz-frame.explanation-frame {
+    min-height: 400px;
+  }
+  
+  .choices-frame {
+    padding: 1.25rem;
+  }
+  
+  .btn-nhan-loc {
+    min-height: 60px;
+    font-size: 1.2rem;
   }
   
   .option-button {
@@ -1693,7 +1957,12 @@ main {
   }
   
   .question-box,
-  .explanation-box {
+  .explanation-box,
+  .quiz-frame {
     padding: 1.25rem;
+  }
+  
+  .choices-frame {
+    padding: 1rem;
   }
 }
