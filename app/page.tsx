@@ -26,13 +26,17 @@ export default function Home() {
   const [showBackToTop, setShowBackToTop] = useState(false)
   const [showNavbar, setShowNavbar] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
-  
-  // Mini Game States
+  // Mini Game States (của bạn)
   const [gameState, setGameState] = useState<GameState>('start')
   const [currentLoc, setCurrentLoc] = useState(0)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [pickedEnvelopes, setPickedEnvelopes] = useState<number[]>([])
+  
+  // States từ main (navbar mobile, card expand)
+  const [activeSection, setActiveSection] = useState('home')
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [expandedCard, setExpandedCard] = useState<string | null>('masses')
   
   const gameData: LocData[] = [
     {
@@ -198,6 +202,34 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [lastScrollY])
 
+  // Theo dõi section đang hiển thị để highlight trên navbar & áp dụng hiệu ứng xuất hiện
+  useEffect(() => {
+    const sections = document.querySelectorAll<HTMLElement>('section[id]')
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const target = entry.target as HTMLElement
+          const id = target.id
+
+          if (entry.isIntersecting) {
+            setActiveSection(id)
+            target.classList.add('visible')
+          } else {
+            target.classList.remove('visible')
+          }
+        })
+      },
+      {
+        threshold: 0.35,
+      }
+    )
+
+    sections.forEach((section) => observer.observe(section))
+
+    return () => observer.disconnect()
+  }, [])
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
@@ -209,6 +241,10 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const toggleCard = (id: string) => {
+    setExpandedCard((current) => (current === id ? null : id))
+  }
+
   return (
     <>
       {/* Navigation - Dark Theme */}
@@ -217,18 +253,89 @@ export default function Home() {
           <div className="nav-logo" onClick={() => scrollToTop()}>
             Triết học Mác – Lênin
           </div>
-          <ul className="nav-menu">
-            <li><a href="#home" onClick={(e) => { e.preventDefault(); scrollToSection('home') }}>Trang chủ</a></li>
-            <li><a href="#intro" onClick={(e) => { e.preventDefault(); scrollToSection('intro') }}>Giới thiệu</a></li>
-            <li><a href="#content" onClick={(e) => { e.preventDefault(); scrollToSection('content') }}>Nội dung</a></li>
-            <li><a href="#conclusion" onClick={(e) => { e.preventDefault(); scrollToSection('conclusion') }}>Kết luận</a></li>
-            <li><a href="#game" onClick={(e) => { e.preventDefault(); scrollToSection('game') }}>Mini Game</a></li>
+          <button
+            className="nav-toggle"
+            type="button"
+            aria-label="Mở/đóng menu"
+            aria-expanded={isMobileMenuOpen}
+            onClick={() => setIsMobileMenuOpen((open) => !open)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+          <ul className={`nav-menu ${isMobileMenuOpen ? 'open' : ''}`}>
+            <li>
+              <a
+                href="#home"
+                className={activeSection === 'home' ? 'active' : ''}
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollToSection('home')
+                  setIsMobileMenuOpen(false)
+                }}
+              >
+                Trang chủ
+              </a>
+            </li>
+            <li>
+              <a
+                href="#intro"
+                className={activeSection === 'intro' ? 'active' : ''}
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollToSection('intro')
+                  setIsMobileMenuOpen(false)
+                }}
+              >
+                Giới thiệu
+              </a>
+            </li>
+            <li>
+              <a
+                href="#content"
+                className={activeSection === 'content' ? 'active' : ''}
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollToSection('content')
+                  setIsMobileMenuOpen(false)
+                }}
+              >
+                Nội dung
+              </a>
+            </li>
+            <li>
+              <a
+                href="#conclusion"
+                className={activeSection === 'conclusion' ? 'active' : ''}
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollToSection('conclusion')
+                  setIsMobileMenuOpen(false)
+                }}
+              >
+                Kết luận
+              </a>
+            </li>
+            <li>
+              <a
+                href="#game"
+                className={activeSection === 'game' ? 'active' : ''}
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollToSection('game')
+                  setIsMobileMenuOpen(false)
+                }}
+              >
+                Mini Game
+              </a>
+            </li>
           </ul>
         </div>
       </nav>
 
       {/* Hero Banner - Large with Image Area */}
-      <section id="home" className="hero">
+      <section id="home" className="hero reveal-section">
         <div className="hero-bg-image"></div>
         <div className="hero-overlay"></div>
         <div className="hero-content">
@@ -247,7 +354,7 @@ export default function Home() {
       </section>
 
       {/* About/Intro Section */}
-      <section id="intro" className="about-section">
+      <section id="intro" className="about-section reveal-section">
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <h2 className="section-heading">
             <span className="heading-main">Giới thiệu</span>
@@ -265,7 +372,7 @@ export default function Home() {
       </section>
 
       {/* Main Content Sections */}
-      <section id="content" className="content-section">
+      <section id="content" className="content-section reveal-section">
         <div className="container">
           <h2 className="section-heading">
             <span className="heading-main">Nội dung chính</span>
@@ -273,7 +380,10 @@ export default function Home() {
           </h2>
           
           {/* Concept Section - Quần chúng nhân dân */}
-          <div className="content-card concept-masses-card">
+          <div
+            className={`content-card concept-masses-card ${expandedCard === 'masses' ? 'expanded' : 'collapsed'}`}
+            onClick={() => toggleCard('masses')}
+          >
             <div className="card-image-area"></div>
             <div className="card-content">
               <h3 className="card-title">1. Khái niệm quần chúng nhân dân</h3>
@@ -290,7 +400,10 @@ export default function Home() {
           </div>
 
           {/* Concept Section - Lãnh tụ */}
-          <div className="content-card concept-leader-card">
+          <div
+            className={`content-card concept-leader-card ${expandedCard === 'leader' ? 'expanded' : 'collapsed'}`}
+            onClick={() => toggleCard('leader')}
+          >
             <div className="card-image-area"></div>
             <div className="card-content">
               <h3 className="card-title">2. Khái niệm lãnh tụ</h3>
@@ -327,7 +440,10 @@ export default function Home() {
           </div>
 
           {/* Role Section */}
-          <div className="content-card role-card">
+          <div
+            className={`content-card role-card ${expandedCard === 'role' ? 'expanded' : 'collapsed'}`}
+            onClick={() => toggleCard('role')}
+          >
             <div className="card-image-area"></div>
             <div className="card-content">
               <h3 className="card-title">3. Vai trò quyết định của quần chúng nhân dân</h3>
@@ -357,7 +473,10 @@ export default function Home() {
           </div>
 
           {/* Leader Section */}
-          <div className="content-card leader-card">
+          <div
+            className={`content-card leader-card ${expandedCard === 'leaderRole' ? 'expanded' : 'collapsed'}`}
+            onClick={() => toggleCard('leaderRole')}
+          >
             <div className="card-image-area"></div>
             <div className="card-content">
               <h3 className="card-title">4. Vai trò quan trọng của lãnh tụ</h3>
@@ -375,7 +494,10 @@ export default function Home() {
           </div>
 
           {/* Relationship Section */}
-          <div className="content-card relationship-card">
+          <div
+            className={`content-card relationship-card ${expandedCard === 'relationship' ? 'expanded' : 'collapsed'}`}
+            onClick={() => toggleCard('relationship')}
+          >
             <div className="card-image-area"></div>
             <div className="card-content">
               <h3 className="card-title">5. Mối quan hệ biện chứng</h3>
@@ -391,7 +513,10 @@ export default function Home() {
           </div>
 
           {/* Methodology Section */}
-          <div className="content-card methodology-card">
+          <div
+            className={`content-card methodology-card ${expandedCard === 'methodology' ? 'expanded' : 'collapsed'}`}
+            onClick={() => toggleCard('methodology')}
+          >
             <div className="card-image-area"></div>
             <div className="card-content">
               <h3 className="card-title">6. Ý nghĩa phương pháp luận</h3>
@@ -410,7 +535,7 @@ export default function Home() {
       </section>
 
       {/* Conclusion Section */}
-      <section id="conclusion" className="conclusion-section">
+      <section id="conclusion" className="conclusion-section reveal-section">
         <div className="container">
           <h2 className="section-heading white">
             <span className="heading-main">Kết luận</span>
