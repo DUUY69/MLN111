@@ -2,11 +2,181 @@
 
 import { useEffect, useState } from 'react'
 
+type GameState = 'start' | 'question' | 'explanation' | 'finished'
+
+interface Question {
+  question: string
+  options: string[]
+  correctAnswer: number
+  explanation: {
+    wrong: string
+    correct: string
+  }
+}
+
+interface LocData {
+  title: string
+  emoji: string
+  questions: Question[]
+  message: string
+}
+
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [showBackToTop, setShowBackToTop] = useState(false)
   const [showNavbar, setShowNavbar] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
+  
+  // Mini Game States
+  const [gameState, setGameState] = useState<GameState>('start')
+  const [currentLoc, setCurrentLoc] = useState(0)
+  const [currentQuestion, setCurrentQuestion] = useState(0)
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
+  const [pickedEnvelopes, setPickedEnvelopes] = useState<number[]>([])
+  
+  const gameData: LocData[] = [
+    {
+      title: 'GÓI BÁNH CHƯNG',
+      emoji: '🥟',
+      questions: [
+        {
+          question: 'Gói bánh chưng ngày Tết thể hiện vai trò nào trong lịch sử xã hội?',
+          options: ['Lãnh tụ', 'Quần chúng nhân dân'],
+          correctAnswer: 1,
+          explanation: {
+            wrong: 'Lãnh tụ không trực tiếp tạo ra các giá trị văn hóa dân gian hằng ngày.',
+            correct: 'Gói bánh chưng là hoạt động lao động, sáng tạo văn hóa do nhân dân thực hiện → quần chúng là chủ thể sáng tạo giá trị tinh thần.'
+          }
+        },
+        {
+          question: 'Truyền thống gói bánh chưng được duy trì qua nhiều thế hệ cho thấy điều gì?',
+          options: ['Vai trò cá nhân kiệt xuất', 'Sức sáng tạo bền bỉ của quần chúng nhân dân'],
+          correctAnswer: 1,
+          explanation: {
+            wrong: 'Truyền thống văn hóa không phụ thuộc vào một cá nhân cụ thể.',
+            correct: 'Chính quần chúng nhân dân là người sáng tạo, lưu giữ và truyền bá văn hóa.'
+          }
+        }
+      ],
+      message: 'Quần chúng nhân dân là chủ thể sáng tạo giá trị văn hóa tinh thần'
+    },
+    {
+      title: 'DỰNG CÂY NÊU – TỔ CHỨC LỄ HỘI TẾT',
+      emoji: '🎋',
+      questions: [
+        {
+          question: 'Để lễ hội Tết diễn ra trật tự và có ý nghĩa, cần vai trò nào?',
+          options: ['Chỉ quần chúng', 'Chỉ lãnh tụ', 'Kết hợp quần chúng và lãnh tụ'],
+          correctAnswer: 2,
+          explanation: {
+            wrong: 'Quần chúng đông đảo nhưng thiếu tổ chức sẽ dễ dẫn đến rối loạn. Lãnh tụ không thể tự mình tạo nên lễ hội nếu không có quần chúng tham gia.',
+            correct: 'Quần chúng là lực lượng thực hiện, lãnh tụ giữ vai trò tổ chức và định hướng.'
+          }
+        },
+        {
+          question: 'Vai trò của người đứng đầu làng/xã trong lễ hội Tết thể hiện điều gì?',
+          options: ['Thay thế vai trò của nhân dân', 'Định hướng và tổ chức hoạt động chung'],
+          correctAnswer: 1,
+          explanation: {
+            wrong: 'Lãnh đạo không thể thay thế hoạt động của quần chúng.',
+            correct: 'Đây chính là vai trò của lãnh tụ theo quan điểm Mác – Lênin.'
+          }
+        }
+      ],
+      message: 'Kết hợp hài hòa vai trò của quần chúng và lãnh tụ'
+    },
+    {
+      title: 'PHONG TRÀO "TẾT VÌ NGƯỜI NGHÈO"',
+      emoji: '❤️',
+      questions: [
+        {
+          question: 'Phong trào "Tết vì người nghèo" chỉ thành công khi nào?',
+          options: ['Có lãnh tụ phát động', 'Có quần chúng tham gia', 'Cả A và B'],
+          correctAnswer: 2,
+          explanation: {
+            wrong: 'Chỉ phát động mà không có sự tham gia của quần chúng thì phong trào không hiệu quả. Tự phát, thiếu tổ chức sẽ khó lan tỏa rộng rãi.',
+            correct: 'Thành công đến từ sự kết hợp biện chứng giữa lãnh tụ và quần chúng.'
+          }
+        },
+        {
+          question: 'Phong trào này thể hiện ý nghĩa phương pháp luận nào?',
+          options: ['Đề cao tuyệt đối vai trò lãnh tụ', 'Phát huy sức mạnh toàn dân'],
+          correctAnswer: 1,
+          explanation: {
+            wrong: 'Triết học Mác – Lênin phản đối sùng bái cá nhân.',
+            correct: 'Mọi phong trào xã hội muốn bền vững phải dựa vào quần chúng.'
+          }
+        }
+      ],
+      message: 'Phát huy sức mạnh toàn dân trong mọi phong trào xã hội'
+    },
+    {
+      title: 'TẾT TRONG CÁCH MẠNG THÁNG TÁM 1945',
+      emoji: '🇻🇳',
+      questions: [
+        {
+          question: 'Vì sao Cách mạng Tháng Tám năm 1945 giành thắng lợi?',
+          options: ['Nhờ một cá nhân kiệt xuất', 'Nhờ sự lãnh đạo đúng đắn và quần chúng nổi dậy'],
+          correctAnswer: 1,
+          explanation: {
+            wrong: 'Không có quần chúng tham gia thì không thể có thắng lợi cách mạng.',
+            correct: 'Lãnh tụ đề ra đường lối đúng + quần chúng là lực lượng quyết định.'
+          }
+        },
+        {
+          question: 'Sự kiện này khẳng định luận điểm nào của Triết học Mác – Lênin?',
+          options: ['Lãnh tụ quyết định toàn bộ lịch sử', 'Quần chúng là chủ thể sáng tạo lịch sử'],
+          correctAnswer: 1,
+          explanation: {
+            wrong: 'Đây là biểu hiện của tư tưởng sùng bái cá nhân.',
+            correct: 'Quần chúng là lực lượng quyết định, lãnh tụ giữ vai trò dẫn dắt.'
+          }
+        }
+      ],
+      message: 'Quần chúng là lực lượng quyết định, lãnh tụ giữ vai trò dẫn dắt'
+    }
+  ]
+  
+  const handlePickEnvelope = (index: number) => {
+    const locIndex = Math.floor(index / 3) // Mỗi lộc có 3 phong bao
+    if (locIndex < gameData.length) {
+      // Nếu chưa chọn phong bao này, thêm vào danh sách
+      if (!pickedEnvelopes.includes(index)) {
+        setPickedEnvelopes([...pickedEnvelopes, index])
+      }
+      // Luôn chuyển sang câu hỏi của lộc này (bắt đầu từ câu hỏi đầu tiên)
+      setCurrentLoc(locIndex)
+      setCurrentQuestion(0)
+      setSelectedAnswer(null)
+      setGameState('question')
+    }
+  }
+  
+  const handleAnswerSelect = (answerIndex: number) => {
+    setSelectedAnswer(answerIndex)
+    // Tự động hiện giải thích ngay sau khi chọn đáp án
+    setTimeout(() => {
+      setGameState('explanation')
+    }, 300)
+  }
+  
+  const handleContinueAfterExplanation = () => {
+    // Quay lại màn hình chọn phong bao để chọn phong bao tiếp theo
+    // Kiểm tra xem đã chọn hết tất cả phong bao chưa
+    if (pickedEnvelopes.length === 12) {
+      setGameState('finished')
+    } else {
+      setGameState('start')
+    }
+  }
+  
+  const handleRestartGame = () => {
+    setGameState('start')
+    setCurrentLoc(0)
+    setCurrentQuestion(0)
+    setSelectedAnswer(null)
+    setPickedEnvelopes([])
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,6 +222,7 @@ export default function Home() {
             <li><a href="#intro" onClick={(e) => { e.preventDefault(); scrollToSection('intro') }}>Giới thiệu</a></li>
             <li><a href="#content" onClick={(e) => { e.preventDefault(); scrollToSection('content') }}>Nội dung</a></li>
             <li><a href="#conclusion" onClick={(e) => { e.preventDefault(); scrollToSection('conclusion') }}>Kết luận</a></li>
+            <li><a href="#game" onClick={(e) => { e.preventDefault(); scrollToSection('game') }}>Mini Game</a></li>
           </ul>
         </div>
       </nav>
@@ -253,6 +424,206 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Mini Game Section */}
+      <section id="game" className="game-section">
+        <div className="falling-elements falling-1"></div>
+        <div className="falling-elements falling-2"></div>
+        <div className="falling-elements falling-3"></div>
+        <div className="falling-elements falling-4"></div>
+        <div className="game-banner-block container">
+          <img src="/game/game-header.png" alt="Hái Lộc Đầu Xuân" className="game-banner-img" />
+          
+          {gameState === 'start' && (
+            <div className="game-start-screen">
+              <div className="envelopes-grid">
+                {Array.from({ length: 12 }).map((_, index) => {
+                  const locIndex = Math.floor(index / 3)
+                  const isPicked = pickedEnvelopes.includes(index)
+                  const locData = gameData[locIndex]
+                  
+                  return (
+                    <div
+                      key={index}
+                      className={`envelope ${isPicked ? 'picked' : ''} ${pickedEnvelopes.length === 12 ? 'all-picked' : ''}`}
+                      onClick={() => !isPicked && handlePickEnvelope(index)}
+                    >
+                      <div className="envelope-front">
+                        <div className="envelope-gold-design"></div>
+                        {isPicked && locData && (
+                          <div className="envelope-content">
+                            <span className="envelope-emoji">{locData.emoji}</span>
+                            <span className="envelope-title">{locData.title}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+              
+              {pickedEnvelopes.length === 0 && (
+                <div>
+                  <p className="game-instruction" style={{ marginBottom: '1rem' }}>
+                    Chọn một phong bao để bắt đầu hái lộc
+                  </p>
+                </div>
+              )}
+              
+              {pickedEnvelopes.length > 0 && pickedEnvelopes.length < 12 && (
+                <p className="game-instruction">Chọn một phong bao khác để tiếp tục</p>
+              )}
+              
+              {pickedEnvelopes.length === 12 && (
+                <button className="game-start-button" onClick={() => setGameState('finished')}>
+                  Xem kết quả
+                </button>
+              )}
+            </div>
+          )}
+          
+          {gameState === 'question' && (
+            <div className="game-question-screen">
+              <div className="game-loc-header">
+                <span className="loc-emoji">{gameData[currentLoc].emoji}</span>
+                <h3 className="loc-title">LỘC {currentLoc + 1}: {gameData[currentLoc].title}</h3>
+              </div>
+              
+              <div className="loc-image-container">
+                {currentLoc === 0 && (
+                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc1/banh-chung.jpg)' }}></div>
+                )}
+                {currentLoc === 1 && (
+                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc2/cay-neu.jpg)' }}></div>
+                )}
+                {currentLoc === 2 && (
+                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc3/tet-nguoi-ngheo.jpg)' }}></div>
+                )}
+                {currentLoc === 3 && (
+                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc4/cm-thang-8.jpg)' }}></div>
+                )}
+              </div>
+              
+              <div className="question-box">
+                <h4 className="question-text">
+                  {gameData[currentLoc].questions[currentQuestion].question}
+                </h4>
+                
+                <div className="options-list">
+                  {gameData[currentLoc].questions[currentQuestion].options.map((option, index) => (
+                    <button
+                      key={index}
+                      className={`option-button ${selectedAnswer === index ? 'selected' : ''} ${selectedAnswer !== null ? 'disabled' : ''}`}
+                      onClick={() => selectedAnswer === null && handleAnswerSelect(index)}
+                      disabled={selectedAnswer !== null}
+                    >
+                      <span className="option-label">{String.fromCharCode(65 + index)}.</span>
+                      <span className="option-text">{option}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {gameState === 'explanation' && (
+            <div className="game-explanation-screen">
+              <div className="game-loc-header">
+                <span className="loc-emoji">{gameData[currentLoc].emoji}</span>
+                <h3 className="loc-title">LỘC {currentLoc + 1}: {gameData[currentLoc].title}</h3>
+              </div>
+              
+              <div className="loc-image-container">
+                {currentLoc === 0 && (
+                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc1/banh-chung.jpg)' }}></div>
+                )}
+                {currentLoc === 1 && (
+                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc2/cay-neu.jpg)' }}></div>
+                )}
+                {currentLoc === 2 && (
+                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc3/tet-nguoi-ngheo.jpg)' }}></div>
+                )}
+                {currentLoc === 3 && (
+                  <div className="loc-image" style={{ backgroundImage: 'url(/game/loc4/cm-thang-8.jpg)' }}></div>
+                )}
+              </div>
+              
+              <div className="explanation-box">
+                <h4 className="question-text">
+                  {gameData[currentLoc].questions[currentQuestion].question}
+                </h4>
+                
+                <div className="answer-result">
+                  <div className={`result-badge ${selectedAnswer === gameData[currentLoc].questions[currentQuestion].correctAnswer ? 'correct' : 'wrong'}`}>
+                    {selectedAnswer === gameData[currentLoc].questions[currentQuestion].correctAnswer ? '✅ Đúng' : '❌ Sai'}
+                  </div>
+                  
+                  <div className="explanation-content">
+                    {selectedAnswer === gameData[currentLoc].questions[currentQuestion].correctAnswer ? (
+                      <div className="explanation-correct">
+                        <p><strong>✅ Đáp án đúng:</strong></p>
+                        <p>{gameData[currentLoc].questions[currentQuestion].explanation.correct}</p>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="explanation-wrong">
+                          <p><strong>❌ Đáp án sai:</strong></p>
+                          <p>{gameData[currentLoc].questions[currentQuestion].explanation.wrong}</p>
+                        </div>
+                        <div className="explanation-correct">
+                          <p><strong>✅ Đáp án đúng:</strong></p>
+                          <p>{gameData[currentLoc].questions[currentQuestion].explanation.correct}</p>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+                
+                <div className="philosophy-message">
+                  <p className="message-text">🌱 {gameData[currentLoc].message}</p>
+                </div>
+                
+                <button className="game-action-button primary" onClick={handleContinueAfterExplanation}>
+                  {pickedEnvelopes.length === 12 ? 'Xem kết quả' : 'Hái lộc tiếp'}
+                </button>
+              </div>
+            </div>
+          )}
+          
+          {gameState === 'finished' && (
+            <div className="game-finished-screen">
+              <div className="finished-content">
+                <div className="finished-icon">🎊</div>
+                <h3 className="finished-title">Chúc mừng bạn đã hoàn thành!</h3>
+                
+                <div className="finished-image-container">
+                  <div className="finished-image" style={{ backgroundImage: 'url(/game/finished/family.jpg)' }}></div>
+                </div>
+                
+                <div className="final-message-box">
+                  <p className="final-message-line">Tết là sản phẩm văn hóa do nhân dân sáng tạo</p>
+                  <p className="final-message-line">Sự phát triển xã hội cần quần chúng làm nền tảng</p>
+                  <p className="final-message-line">và lãnh tụ giữ vai trò định hướng</p>
+                </div>
+                
+                <div className="philosophy-summary">
+                  <h4>Thông điệp triết học:</h4>
+                  <ul className="philosophy-list">
+                    <li>🌱 Quần chúng nhân dân là chủ thể sáng tạo lịch sử</li>
+                    <li>🌱 Lãnh tụ không đứng ngoài quần chúng</li>
+                    <li>🌱 Chống sùng bái cá nhân</li>
+                    <li>🌱 Phát huy sức mạnh toàn dân</li>
+                  </ul>
+                </div>
+                
+                <button className="game-action-button primary" onClick={handleRestartGame}>
+                  Chơi lại
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="footer">
         <div className="container">
@@ -268,6 +639,7 @@ export default function Home() {
                 <li><a href="#intro">Giới thiệu</a></li>
                 <li><a href="#content">Nội dung chính</a></li>
                 <li><a href="#conclusion">Kết luận</a></li>
+                <li><a href="#game">Mini Game</a></li>
               </ul>
             </div>
             <div className="footer-section">
