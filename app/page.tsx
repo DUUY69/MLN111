@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type GameState = 'start' | 'question' | 'explanation' | 'finished'
 
@@ -33,6 +33,8 @@ export default function Home() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [pickedEnvelopes, setPickedEnvelopes] = useState<number[]>([])
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false)
+  const gameAudioRef = useRef<HTMLAudioElement>(null)
   
   // States từ main (navbar mobile, card expand)
   const [activeSection, setActiveSection] = useState('home')
@@ -599,6 +601,25 @@ export default function Home() {
 
       {/* Mini Game Section */}
       <section id="game" className="game-section">
+        <audio ref={gameAudioRef} src="/videoplayback.m4a" loop preload="metadata" />
+        <button
+          type="button"
+          className="game-music-toggle"
+          onClick={() => {
+            const a = gameAudioRef.current
+            if (!a) return
+            if (isMusicPlaying) {
+              a.pause()
+              setIsMusicPlaying(false)
+            } else {
+              a.play().then(() => setIsMusicPlaying(true)).catch(() => {})
+            }
+          }}
+          aria-label={isMusicPlaying ? 'Tắt nhạc nền' : 'Bật nhạc nền'}
+          title={isMusicPlaying ? 'Tắt nhạc nền' : 'Bật nhạc nền'}
+        >
+          <span className="game-music-icon">{isMusicPlaying ? '🔊' : '🔇'}</span>
+        </button>
         <div className="falling-elements falling-1"></div>
         <div className="falling-elements falling-2"></div>
         <div className="falling-elements falling-3"></div>
