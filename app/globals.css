@@ -1264,6 +1264,22 @@ main {
   display: block;
 }
 
+/* Ảnh minh họa hiện ngay khi mở câu hỏi */
+.quiz-frame-illustration {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+.quiz-frame-illustration img {
+  max-width: 100%;
+  max-height: 220px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .game-loc-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -1469,6 +1485,15 @@ main {
   line-height: 1.7;
   color: #333;
   font-size: 1.05rem;
+}
+
+.answer-card-content p.your-choice-line {
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-size: 0.95rem;
+}
+.answer-card-content p.your-choice-line strong {
+  color: #8b0000;
 }
 
 .answer-wrong-card .answer-card-content {

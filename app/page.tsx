@@ -9,17 +9,19 @@ interface Question {
   options: string[]
   correctAnswer: number
   explanation: {
-    wrong: string
+    wrong: string  // Fallback khi không có wrongReasons theo từng đáp án
     correct: string
   }
-  theory: string  // Lý thuyết áp dụng riêng cho từng câu
+  wrongReasons?: string[]  // Giải thích vì sao từng đáp án sai (theo index: 0=A, 1=B, ...)
+  theory: string
 }
 
 interface LocData {
   title: string
   emoji: string
   questions: Question[]
-  illustration?: string  // Ảnh minh họa: đặt file vào public/game/illustrations/
+  illustration?: string   // Ảnh trong câu hỏi (khi mở câu)
+  envelopeIllustration?: string  // Ảnh trên phong bì khi đã chọn (nếu khác ảnh câu hỏi)
 }
 
 export default function Home() {
@@ -48,36 +50,55 @@ export default function Home() {
       questions: [
         {
           question: 'Ai là chủ thể chính sáng tạo và lưu truyền phong tục gói bánh chưng ngày Tết?',
-          options: ['Lãnh tụ', 'Quần chúng nhân dân'],
+          options: ['Lãnh tụ', 'Quần chúng nhân dân', 'Triều đình phong kiến', 'Tầng lớp trí thức'],
           correctAnswer: 1,
           explanation: {
-            wrong: 'Lãnh tụ không trực tiếp tạo ra các giá trị văn hóa dân gian hằng ngày.',
+            wrong: 'Đáp án này không đúng; quần chúng nhân dân mới là chủ thể sáng tạo và lưu truyền phong tục.',
             correct: 'Gói bánh chưng là hoạt động lao động, sáng tạo văn hóa do nhân dân thực hiện → quần chúng là chủ thể sáng tạo giá trị tinh thần.'
           },
+          wrongReasons: [
+            'Lãnh tụ không trực tiếp tạo ra các giá trị văn hóa dân gian hằng ngày.',
+            '',
+            'Triều đình phong kiến không phải chủ thể sáng tạo phong tục dân gian; chính quần chúng nhân dân mới sáng tạo và lưu truyền.',
+            'Tầng lớp trí thức có đóng góp nhưng không phải chủ thể chính; quần chúng nhân dân mới là lực lượng sáng tạo và lưu truyền văn hóa dân gian.'
+          ],
           theory: 'Quần chúng nhân dân là chủ thể sáng tạo giá trị văn hóa tinh thần'
         },
         {
           question: 'Truyền thống gói bánh chưng được duy trì qua nhiều thế hệ cho thấy điều gì?',
-          options: ['Vai trò cá nhân kiệt xuất', 'Sức sáng tạo bền bỉ của quần chúng nhân dân'],
+          options: ['Vai trò cá nhân kiệt xuất', 'Sức sáng tạo bền bỉ của quần chúng nhân dân', 'Sự bảo trợ của nhà nước', 'Vai trò của các bậc cao niên'],
           correctAnswer: 1,
           explanation: {
-            wrong: 'Truyền thống văn hóa không phụ thuộc vào một cá nhân cụ thể.',
+            wrong: 'Truyền thống văn hóa không phụ thuộc vào một yếu tố đơn lẻ; quần chúng mới là chủ thể.',
             correct: 'Chính quần chúng nhân dân là người sáng tạo, lưu giữ và truyền bá văn hóa.'
           },
+          wrongReasons: [
+            'Truyền thống văn hóa không phụ thuộc vào một cá nhân cụ thể.',
+            '',
+            'Sự bảo trợ nhà nước có thể hỗ trợ nhưng không phải nguồn gốc; quần chúng nhân dân mới sáng tạo và lưu truyền văn hóa.',
+            'Các bậc cao niên là một bộ phận của quần chúng; sức sáng tạo bền bỉ của toàn thể quần chúng mới là then chốt.'
+          ],
           theory: 'Quần chúng nhân dân sáng tạo, lưu giữ và truyền bá văn hóa qua các thế hệ'
         },
         {
           question: 'Bánh chưng – biểu tượng văn hóa Tết – do ai sáng tạo nên?',
-          options: ['Vua Hùng hoặc lãnh tụ triều đình', 'Quần chúng nhân dân qua lao động và đời sống'],
+          options: ['Một cá nhân riêng lẻ', 'Quần chúng nhân dân qua lao động và đời sống', 'Các nghệ nhân cung đình', 'Tầng lớp quý tộc'],
           correctAnswer: 1,
           explanation: {
-            wrong: 'Biểu tượng văn hóa dân gian thường xuất phát từ đời sống nhân dân, không phải từ một cá nhân cụ thể.',
+            wrong: 'Biểu tượng văn hóa dân gian xuất phát từ đời sống quần chúng, không phải từ một nhóm hay cá nhân cụ thể.',
             correct: 'Văn hóa dân gian là sản phẩm của quần chúng qua quá trình lao động và sinh hoạt.'
           },
+          wrongReasons: [
+            'Một cá nhân riêng lẻ không phải chủ thể sáng tạo văn hóa dân gian; quần chúng qua lao động và đời sống mới sáng tạo nên.',
+            '',
+            'Nghệ nhân cung đình không phải nguồn gốc của văn hóa dân gian; quần chúng qua lao động và đời sống mới sáng tạo nên.',
+            'Tầng lớp quý tộc không phải chủ thể sáng tạo văn hóa dân gian; quần chúng nhân dân mới là lực lượng đó.'
+          ],
           theory: 'Văn hóa dân gian là sản phẩm của quần chúng qua lao động và sinh hoạt'
         }
       ],
-      illustration: '/game/illustrations/loc-1.png'  // Đặt ảnh vào public/game/illustrations/loc-1.png
+      illustration: '/game/illustrations/loc-1.png',
+      envelopeIllustration: '/game/illustrations/envelope-loc-1.png'
     },
     {
       title: 'DỰNG CÂY NÊU – TỔ CHỨC LỄ HỘI TẾT',
@@ -85,36 +106,56 @@ export default function Home() {
       questions: [
         {
           question: 'Để lễ hội Tết diễn ra trật tự và có ý nghĩa, cần vai trò nào?',
-          options: ['Chỉ quần chúng', 'Chỉ lãnh tụ', 'Kết hợp quần chúng và lãnh tụ'],
+          options: ['Chỉ quần chúng', 'Chỉ lãnh tụ', 'Kết hợp quần chúng và lãnh tụ', 'Chỉ cơ quan nhà nước', 'Chỉ các đoàn thể'],
           correctAnswer: 2,
           explanation: {
-            wrong: 'Quần chúng đông đảo nhưng thiếu tổ chức sẽ dễ dẫn đến rối loạn. Lãnh tụ không thể tự mình tạo nên lễ hội nếu không có quần chúng tham gia.',
+            wrong: 'Cần có cả quần chúng thực hiện và lãnh tụ tổ chức, định hướng.',
             correct: 'Quần chúng là lực lượng thực hiện, lãnh tụ giữ vai trò tổ chức và định hướng.'
           },
+          wrongReasons: [
+            'Chỉ quần chúng thì thiếu tổ chức, dễ rối loạn; cần có lãnh tụ định hướng và tổ chức.',
+            'Chỉ lãnh tụ thì không đủ; lãnh tụ không thể tự tạo nên lễ hội nếu không có quần chúng tham gia.',
+            '',
+            'Cơ quan nhà nước chỉ là một bên; cần kết hợp cả quần chúng (thực hiện) và lãnh tụ (tổ chức).',
+            'Đoàn thể là một phần; để lễ hội có ý nghĩa cần kết hợp hài hòa quần chúng và lãnh tụ.'
+          ],
           theory: 'Kết hợp hài hòa vai trò quần chúng (thực hiện) và lãnh tụ (tổ chức, định hướng)'
         },
         {
           question: 'Vai trò của người đứng đầu làng/xã trong lễ hội Tết thể hiện điều gì?',
-          options: ['Thay thế vai trò của nhân dân', 'Định hướng và tổ chức hoạt động chung'],
+          options: ['Thay thế vai trò của nhân dân', 'Định hướng và tổ chức hoạt động chung', 'Trực tiếp thay nhân dân thực hiện', 'Quyết định mọi chi tiết lễ hội'],
           correctAnswer: 1,
           explanation: {
-            wrong: 'Lãnh đạo không thể thay thế hoạt động của quần chúng.',
+            wrong: 'Lãnh tụ định hướng và tổ chức, không thay thế quần chúng.',
             correct: 'Đây chính là vai trò của lãnh tụ theo quan điểm Mác – Lênin.'
           },
+          wrongReasons: [
+            'Lãnh đạo không thể thay thế vai trò của nhân dân; lãnh tụ định hướng và tổ chức.',
+            '',
+            'Lãnh tụ không trực tiếp thay nhân dân thực hiện; họ tổ chức và định hướng để quần chúng thực hiện.',
+            'Lãnh tụ không quyết định mọi chi tiết; vai trò là định hướng và tổ chức hoạt động chung.'
+          ],
           theory: 'Vai trò lãnh tụ: định hướng và tổ chức, không thay thế quần chúng'
         },
         {
           question: 'Cây nêu ngày Tết được dựng lên nhờ sự kết hợp của ai?',
-          options: ['Chỉ người đứng đầu làng', 'Cả quần chúng thực hiện và lãnh tụ tổ chức'],
+          options: ['Chỉ người đứng đầu làng', 'Cả quần chúng thực hiện và lãnh tụ tổ chức', 'Chỉ già làng', 'Chỉ thanh niên trong làng'],
           correctAnswer: 1,
           explanation: {
-            wrong: 'Một mình lãnh đạo không thể tạo nên lễ hội có ý nghĩa.',
+            wrong: 'Cần cả quần chúng thực hiện và lãnh tụ tổ chức.',
             correct: 'Quần chúng là lực lượng thực hiện, lãnh tụ đóng vai trò dẫn dắt và tổ chức.'
           },
+          wrongReasons: [
+            'Một mình người đứng đầu làng không thể tạo nên lễ hội có ý nghĩa; cần quần chúng thực hiện.',
+            '',
+            'Già làng chỉ là một bộ phận; cây nêu được dựng nhờ cả quần chúng và lãnh tụ tổ chức.',
+            'Thanh niên chỉ là lực lượng tham gia; cần cả quần chúng và lãnh tụ kết hợp.'
+          ],
           theory: 'Quần chúng thực hiện, lãnh tụ dẫn dắt và tổ chức – kết hợp biện chứng'
         }
       ],
-      illustration: '/game/illustrations/loc-2.png'
+      illustration: '/game/illustrations/loc-2.png',
+      envelopeIllustration: '/game/illustrations/envelope-loc-2.png'
     },
     {
       title: 'PHONG TRÀO "TẾT VÌ NGƯỜI NGHÈO"',
@@ -122,36 +163,56 @@ export default function Home() {
       questions: [
         {
           question: 'Phong trào "Tết vì người nghèo" chỉ thành công khi nào?',
-          options: ['Có lãnh tụ phát động', 'Có quần chúng tham gia', 'Cả A và B'],
+          options: ['Có lãnh tụ phát động', 'Có quần chúng tham gia', 'Cả A và B', 'Chỉ khi có kinh phí nhà nước', 'Chỉ khi truyền thông đưa tin'],
           correctAnswer: 2,
           explanation: {
-            wrong: 'Chỉ phát động mà không có sự tham gia của quần chúng thì phong trào không hiệu quả. Tự phát, thiếu tổ chức sẽ khó lan tỏa rộng rãi.',
+            wrong: 'Cần cả lãnh tụ phát động và quần chúng tham gia.',
             correct: 'Thành công đến từ sự kết hợp biện chứng giữa lãnh tụ và quần chúng.'
           },
+          wrongReasons: [
+            'Chỉ có lãnh tụ phát động mà không có quần chúng tham gia thì phong trào không hiệu quả.',
+            'Chỉ có quần chúng tham gia mà thiếu tổ chức, định hướng từ lãnh tụ thì khó lan tỏa rộng rãi.',
+            '',
+            'Kinh phí nhà nước có thể hỗ trợ nhưng thành công phụ thuộc vào sự kết hợp lãnh tụ và quần chúng.',
+            'Truyền thông là công cụ; thành công thực sự đến từ cả lãnh tụ phát động và quần chúng tham gia.'
+          ],
           theory: 'Sự kết hợp biện chứng giữa lãnh tụ (phát động) và quần chúng (tham gia)'
         },
         {
           question: 'Phong trào này thể hiện ý nghĩa phương pháp luận nào?',
-          options: ['Đề cao tuyệt đối vai trò lãnh tụ', 'Phát huy sức mạnh toàn dân'],
+          options: ['Đề cao tuyệt đối vai trò lãnh tụ', 'Phát huy sức mạnh toàn dân', 'Dựa vào tài trợ doanh nghiệp', 'Tập trung vào cá nhân tiêu biểu'],
           correctAnswer: 1,
           explanation: {
-            wrong: 'Triết học Mác – Lênin phản đối sùng bái cá nhân.',
+            wrong: 'Triết học Mác – Lênin nhấn mạnh phát huy sức mạnh toàn dân, không sùng bái cá nhân.',
             correct: 'Mọi phong trào xã hội muốn bền vững phải dựa vào quần chúng.'
           },
+          wrongReasons: [
+            'Triết học Mác – Lênin phản đối sùng bái cá nhân, đề cao tuyệt đối lãnh tụ.',
+            '',
+            'Tài trợ doanh nghiệp chỉ là nguồn lực; ý nghĩa phương pháp luận là phát huy sức mạnh toàn dân.',
+            'Tập trung vào cá nhân tiêu biểu trái với tinh thần phát huy sức mạnh toàn dân.'
+          ],
           theory: 'Phát huy sức mạnh toàn dân; chống sùng bái cá nhân'
         },
         {
           question: 'Ai là người trực tiếp mang quà, lì xì đến với người nghèo trong phong trào "Tết vì người nghèo"?',
-          options: ['Chỉ lãnh tụ phát động', 'Quần chúng tình nguyện viên và nhân dân tham gia'],
+          options: ['Chỉ lãnh tụ phát động', 'Quần chúng tình nguyện viên và nhân dân tham gia', 'Chỉ cán bộ đoàn thể', 'Chỉ chính quyền địa phương'],
           correctAnswer: 1,
           explanation: {
-            wrong: 'Lãnh tụ phát động nhưng không trực tiếp thực hiện toàn bộ.',
+            wrong: 'Quần chúng mới là lực lượng trực tiếp thực hiện; lãnh tụ định hướng và tổ chức.',
             correct: 'Quần chúng là lực lượng trực tiếp thực hiện, lãnh tụ định hướng và tổ chức.'
           },
+          wrongReasons: [
+            'Lãnh tụ phát động nhưng không trực tiếp thực hiện toàn bộ; quần chúng mới là lực lượng trực tiếp.',
+            '',
+            'Cán bộ đoàn thể là một bộ phận của lực lượng thực hiện; quần chúng tình nguyện viên và nhân dân mới là chủ thể trực tiếp.',
+            'Chính quyền địa phương hỗ trợ tổ chức; người trực tiếp mang quà đến là quần chúng tình nguyện viên và nhân dân.'
+          ],
           theory: 'Quần chúng là lực lượng trực tiếp thực hiện, lãnh tụ định hướng'
         }
       ],
-      illustration: '/game/illustrations/loc-3.png'
+      illustration: '/game/illustrations/loc-3.png',
+      envelopeIllustration: '/game/illustrations/envelope-loc-3.png'
     },
     {
       title: 'TẾT TRONG CÁCH MẠNG THÁNG TÁM 1945',
@@ -159,48 +220,71 @@ export default function Home() {
       questions: [
         {
           question: 'Vì sao Cách mạng Tháng Tám năm 1945 giành thắng lợi?',
-          options: ['Nhờ một cá nhân kiệt xuất', 'Nhờ sự lãnh đạo đúng đắn và quần chúng nổi dậy'],
+          options: ['Nhờ một cá nhân kiệt xuất', 'Nhờ sự lãnh đạo đúng đắn và quần chúng nổi dậy', 'Nhờ ngoại bang viện trợ', 'Nhờ yếu tố may mắn'],
           correctAnswer: 1,
           explanation: {
-            wrong: 'Không có quần chúng tham gia thì không thể có thắng lợi cách mạng.',
+            wrong: 'Thắng lợi cách mạng nhờ lãnh đạo đúng đắn và quần chúng nổi dậy.',
             correct: 'Lãnh tụ đề ra đường lối đúng + quần chúng là lực lượng quyết định.'
           },
+          wrongReasons: [
+            'Không có quần chúng tham gia thì không thể có thắng lợi cách mạng; một cá nhân không làm nên lịch sử.',
+            '',
+            'Cách mạng Tháng Tám giành thắng lợi chủ yếu nhờ lãnh đạo đúng đắn và quần chúng nổi dậy, không phải ngoại bang viện trợ.',
+            'Thắng lợi không phải may mắn mà nhờ đường lối đúng và sức mạnh quần chúng.'
+          ],
           theory: 'Lãnh tụ đề ra đường lối đúng + quần chúng là lực lượng quyết định'
         },
         {
           question: 'Sự kiện này khẳng định luận điểm nào của Triết học Mác – Lênin?',
-          options: ['Lãnh tụ quyết định toàn bộ lịch sử', 'Quần chúng là chủ thể sáng tạo lịch sử'],
+          options: ['Lãnh tụ quyết định toàn bộ lịch sử', 'Quần chúng là lực lượng quyết định, lãnh tụ giữ vai trò dẫn dắt', 'Lãnh tụ là động lực duy nhất', 'Điều kiện khách quan quyết định tất cả'],
           correctAnswer: 1,
           explanation: {
-            wrong: 'Đây là biểu hiện của tư tưởng sùng bái cá nhân.',
+            wrong: 'Triết học Mác – Lênin khẳng định quần chúng là chủ thể sáng tạo lịch sử.',
             correct: 'Quần chúng là lực lượng quyết định, lãnh tụ giữ vai trò dẫn dắt.'
           },
+          wrongReasons: [
+            'Lãnh tụ quyết định toàn bộ lịch sử là tư tưởng sùng bái cá nhân; Cách mạng Tháng Tám khẳng định quần chúng là chủ thể.',
+            '',
+            'Lãnh tụ không phải động lực duy nhất; quần chúng mới là chủ thể sáng tạo lịch sử.',
+            'Điều kiện khách quan quan trọng nhưng sự kiện này khẳng định vai trò quần chúng và lãnh tụ trong lịch sử.'
+          ],
           theory: 'Quần chúng là chủ thể sáng tạo lịch sử; lãnh tụ dẫn dắt'
         },
         {
           question: 'Trong Cách mạng Tháng Tám 1945, lực lượng nào là "người làm nên lịch sử"?',
-          options: ['Chỉ lãnh tụ và Đảng', 'Quần chúng nhân dân dưới sự lãnh đạo của Đảng'],
+          options: ['Chỉ lãnh tụ và Đảng', 'Quần chúng nhân dân dưới sự lãnh đạo của Đảng', 'Chỉ Đảng Cộng sản', 'Chỉ lực lượng vũ trang'],
           correctAnswer: 1,
           explanation: {
-            wrong: 'Lãnh tụ và Đảng lãnh đạo nhưng quần chúng mới là lực lượng quyết định.',
+            wrong: '"Người làm nên lịch sử" là quần chúng nhân dân dưới sự lãnh đạo của Đảng.',
             correct: 'Quần chúng là chủ thể lịch sử, lãnh tụ đề ra đường lối và dẫn dắt.'
           },
+          wrongReasons: [
+            'Lãnh tụ và Đảng lãnh đạo nhưng quần chúng mới là lực lượng làm nên lịch sử.',
+            '',
+            'Đảng lãnh đạo nhưng "người làm nên lịch sử" là quần chúng nhân dân dưới sự lãnh đạo ấy.',
+            'Lực lượng vũ trang là một bộ phận; quần chúng nhân dân (trong đó có vũ trang) dưới sự lãnh đạo của Đảng mới là chủ thể.'
+          ],
           theory: 'Quần chúng là chủ thể lịch sử – "người làm nên lịch sử"'
         }
       ],
-      illustration: '/game/illustrations/loc-4.png'
+      illustration: '/game/illustrations/loc-4.png',
+      envelopeIllustration: '/game/illustrations/envelope-loc-4.png'
     }
   ]
+
+  // Đảo vị trí phong bì: ô thứ i trên lưới → nội dung thứ ENVELOPE_ORDER[i] (0–11)
+  const ENVELOPE_ORDER = [3, 7, 0, 10, 1, 4, 8, 11, 2, 5, 9, 6]
   
   const handlePickEnvelope = (index: number) => {
-    const locIndex = Math.floor(index / 3) // Mỗi lộc có 3 phong bao
-    const questionIndex = index % 3 // Mỗi phong bao tương ứng 1 câu hỏi
+    const contentIndex = ENVELOPE_ORDER[index]
+    const locIndex = Math.floor(contentIndex / 3)
+    const questionIndex = contentIndex % 3
     if (locIndex < gameData.length) {
       if (!pickedEnvelopes.includes(index)) {
         setPickedEnvelopes([...pickedEnvelopes, index])
       }
       setCurrentLoc(locIndex)
-      setCurrentQuestion(questionIndex) // Câu hỏi theo phong bao (0, 1, 2)
+      setCurrentQuestion(questionIndex)
       setSelectedAnswer(null)
       setGameState('question')
     }
@@ -482,7 +566,7 @@ export default function Home() {
                 <div className="character-info">
                   <h3 className="character-name">Chủ tịch Hồ Chí Minh</h3>
                   <p className="character-description">
-                    Chủ tịch Hồ Chí Minh xuất hiện từ phong trào yêu nước của nhân dân Việt Nam, tiêu biểu cho trí tuệ và nguyện vọng của dân tộc trong thời kỳ cách mạng giải phóng dân tộc.
+                    Chủ tịch Hồ Chí Minh xuất hiện từ phong trào yêu nước của nhân dân Việt Nam – lãnh tụ xuất phát từ phong trào quần chúng và gắn bó mật thiết với nhân dân, tiêu biểu cho trí tuệ và nguyện vọng của dân tộc trong thời kỳ cách mạng giải phóng dân tộc.
                   </p>
                 </div>
               </div>
@@ -631,7 +715,8 @@ export default function Home() {
             <div className="game-start-screen">
               <div className="envelopes-grid">
                 {Array.from({ length: 12 }).map((_, index) => {
-                  const locIndex = Math.floor(index / 3)
+                  const contentIndex = ENVELOPE_ORDER[index]
+                  const locIndex = Math.floor(contentIndex / 3)
                   const isPicked = pickedEnvelopes.includes(index)
                   const locData = gameData[locIndex]
                   
@@ -645,8 +730,8 @@ export default function Home() {
                         <div className="envelope-gold-design"></div>
                         {isPicked && locData && (
                           <div className="envelope-content">
-                            {locData.illustration ? (
-                              <img src={locData.illustration} alt={locData.title} className="envelope-illustration" />
+                            {(locData.envelopeIllustration ?? locData.illustration) ? (
+                              <img src={locData.envelopeIllustration ?? locData.illustration} alt={locData.title} className="envelope-illustration" />
                             ) : (
                               <span className="envelope-title">{locData.title}</span>
                             )}
@@ -685,6 +770,11 @@ export default function Home() {
                   <div className="quiz-frame-header">
                     <h3 className="loc-title">LỘC {currentLoc + 1}: {gameData[currentLoc].title}</h3>
                   </div>
+                  {gameData[currentLoc].illustration && (
+                    <div className="quiz-frame-illustration">
+                      <img src={gameData[currentLoc].illustration} alt={gameData[currentLoc].title} />
+                    </div>
+                  )}
                   <div className="quiz-label">CÂU HỎI</div>
                   <h4 className="question-text">
                     {gameData[currentLoc].questions[currentQuestion].question}
@@ -735,7 +825,14 @@ export default function Home() {
                         <div className="answer-card answer-wrong-card">
                           <div className="answer-card-content">
                             <div className="answer-card-label wrong">Đáp án sai</div>
-                            <p>{gameData[currentLoc].questions[currentQuestion].explanation.wrong}</p>
+                            <p className="your-choice-line">Bạn đã chọn: <strong>{String.fromCharCode(65 + (selectedAnswer ?? 0))}. {gameData[currentLoc].questions[currentQuestion].options[selectedAnswer ?? 0]}</strong></p>
+                            <p>{(() => {
+                              const q = gameData[currentLoc].questions[currentQuestion]
+                              const reasons = q.wrongReasons
+                              const idx = selectedAnswer ?? 0
+                              if (reasons && reasons[idx]) return reasons[idx]
+                              return q.explanation.wrong
+                            })()}</p>
                           </div>
                         </div>
                         <div className="answer-card answer-correct-card">
