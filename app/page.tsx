@@ -921,6 +921,7 @@ export default function Home() {
           </div>
           <div className="footer-bottom">
             <p>© 2024 - Triết học Mác – Lênin - Mục 3.2. Tất cả quyền được bảo lưu.</p>
+            <p className="footer-ai-credit">Sản phẩm có sử dụng AI (Cursor và ChatGPT) để hỗ trợ viết code, thiết kế giao diện, soạn nội dung lý thuyết và câu hỏi trắc nghiệm.</p>
           </div>
         </div>
       </footer>

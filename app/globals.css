@@ -810,6 +810,12 @@ main {
   color: var(--text-light);
 }
 
+.footer-bottom .footer-ai-credit {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
 /* Back to Top Button */
 .back-to-top {
   position: fixed;
