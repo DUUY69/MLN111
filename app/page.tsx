@@ -898,7 +898,7 @@ export default function Home() {
         <div className="container">
           <div className="footer-content">
             <div className="footer-section">
-              <h4 className="footer-title">Về bài nghiên cứu</h4>
+              <h4 className="footer-title">Sản phẩm sáng tạo</h4>
               <p>Triết học Mác – Lênin</p>
               <p>Mục 3.2 – Giáo trình chính thức</p>
             </div>
